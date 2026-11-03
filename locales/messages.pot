@@ -1,0 +1,57 @@
+# Translations template for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-11-03 21:20+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: main.py:30 main.py:59
+msgid "Add Message"
+msgstr ""
+
+#: main.py:31
+msgid "My Message"
+msgstr ""
+
+#: main.py:32 main.py:92
+msgid "Language"
+msgstr ""
+
+#: main.py:52
+msgid "Hello!"
+msgstr ""
+
+#: main.py:70
+msgid "Saccesfuly Add!"
+msgstr ""
+
+#: main.py:83
+msgid "You don't have any messages!"
+msgstr ""
+
+#: main.py:85
+msgid ""
+"📝 last 5 message:\n"
+"\n"
+msgstr ""
+
+#: main.py:99
+msgid "Choice language"
+msgstr ""
+
+#: main.py:111
+msgid "Change Language"
+msgstr ""
+
