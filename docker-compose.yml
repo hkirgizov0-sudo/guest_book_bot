@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:alpine
+    container_name: messages_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "1"
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql
+
+  notes_bot:
+    build: .
+    image: messages_image:alpine
+    container_name: messages_con
+    restart: always
+    command:
+      - python
+      - main.py
+    depends_on:
+      - db
+
+volumes:
+  pg_data:
+  

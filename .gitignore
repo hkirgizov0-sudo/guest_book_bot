@@ -1,0 +1,11 @@
+.venv
+.env
+.idea
+
+
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/hkirgizov0-sudo/guest_book_bot.git
+git push -u origin main
