@@ -3,19 +3,17 @@ import logging
 import sys
 from os import getenv
 
-from aiogram.utils import i18n
-from sqlalchemy import select
-from aiogram import Bot, Dispatcher, html, F
+from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message , KeyboardButton
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from sqlalchemy.dialects.mysql import insert
-from sqlalchemy.orm import Session
+from aiogram.types import Message, KeyboardButton
 from aiogram.utils.i18n import gettext as _, lazy_gettext as __, I18n, FSMI18nMiddleware
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from sqlalchemy import select, insert
+from sqlalchemy.orm import Session
 
 from models import Base, engine, User, Messages
 
@@ -62,7 +60,7 @@ async def add_message_handler(message: Message,state : FSMContext) -> None:
 @dp.message(F.text, MessagesForm.message)
 async def new_message_handler(message: Message,state : FSMContext) -> None:
     message_text=message.text
-    query=insert(Messages).values(message=message , user_id=message.from_user.id)
+    query=insert(Messages).values(message=message_text , user_id=message.from_user.id)
     session.execute(query)
     session.commit()
     await state.clear()
@@ -70,21 +68,25 @@ async def new_message_handler(message: Message,state : FSMContext) -> None:
     await message.answer(_("Saccesfuly Add!"),reply_markup=btn)
 
 @dp.message(F.text == __("My Message"))
-async def my_note_handler(message: Message, state: FSMContext) -> None:
+async def my_note_handler(message: Message, state: FSMContext):
     query = (
         select(Messages)
         .where(Messages.user_id == message.from_user.id)
         .order_by(Messages.id.desc())
         .limit(5)
     )
+
     messages = session.execute(query).scalars().all()
 
     if not messages:
         await message.answer(_("You don't have any messages!"))
         return
-    text = _("📝 last 5 message:\n\n")
+
+    text = _("📝 Last 5 messages:\n\n")
+
     for i, note in enumerate(messages, start=1):
-        text += f"{i}. {note.text}\n\n"
+        text += f"{i}. {note.message}\n\n"
+
     await message.answer(text)
 
 
@@ -99,16 +101,18 @@ async def language_handler(message : Message):
     await message.answer(_("Choice language"), reply_markup=btn)
 
 @dp.message(F.text.in_(("English", "Uzbek")))
-async def choice_lang_handler(message : Message, state : FSMContext):
-    map = {
-        "English" : "en",
-        "Uzbek" : "uz",
+async def choice_lang_handler(message: Message, state: FSMContext):
+    lang_map = {
+        "English": "en",
+        "Uzbek": "uz",
     }
-    lang = map.get(message.text)
-    await state.set_data({"locale" : lang})
-    i18n.current_locale = lang
-    btns = buttons_manu()
-    await message.answer(_("Change Language"), reply_markup=btns)
+
+    lang = lang_map.get(message.text)
+
+    await state.update_data(locale=lang)
+
+    btn = buttons_manu()
+    await message.answer(_("Change Language"), reply_markup=btn)
 
 
 
